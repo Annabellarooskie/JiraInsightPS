@@ -1,0 +1,10 @@
+{
+  "files.trimTrailingWhitespace": true,
+  "powershell.codeFormatting.preset": "OTBS",
+
+  "search.exclude": {
+    "**/tests": true
+  },
+  "workbench.editor.enablePreview": false,
+  "workbench.editor.enablePreviewFromQuickOpen": false
+}

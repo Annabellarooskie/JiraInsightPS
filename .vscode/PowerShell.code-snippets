@@ -1,0 +1,56 @@
+{
+  "Advanced Function": {
+    "prefix": "ffunction",
+    "body": [
+      "function ${1:FunctionName} {",
+      "",
+      "\t[CmdletBinding(PositionalBinding, ConfirmImpact = 'medium')]",
+      "",
+      "\tparam (",
+      "",
+      "\t\t",
+      "",
+      "\t)",
+      "",
+      "\tbegin {",
+      "\t\t",
+      "\t}",
+      "",
+      "\tprocess {",
+      "",
+      "\t\ttry {",
+      "",
+      "",
+      "\t\t } catch {",
+      "",
+      "\t\t\tWrite-Error -ErrorAction Stop -Exception \\$_.Exception",
+      "",
+      "\t\t}",
+      "",
+      "\t}",
+      "",
+      "\tend {",
+      "\t\t",
+      "\t}",
+      "",
+      "}"
+    ],
+    "description": "Advanced Function Template"
+  },
+  "Verbose Header": {
+    "prefix": "VH",
+    "body": ["Write-Verbose \"[$(\\$MyInvocation.MyCommand.Name)]: $0 \""],
+    "description": "Write-Verbose Header"
+  },
+
+  "Parameter Template": {
+    "prefix": "fparam",
+    "body": [
+      "[Parameter(Mandatory, ValueFromPipelineByPropertyName, ValueFromPipeline, ValueFromRemainingArguments)]",
+      "[ValidateNotNullOrEmpty()]",
+      "[TypeName]",
+      "\\$${1:Input1}"
+    ],
+    "description": "Parameter template"
+  }
+}
