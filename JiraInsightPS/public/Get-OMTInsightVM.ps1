@@ -1,4 +1,4 @@
-function Get-InsightVM {
+function Get-OMTInsightVM {
 
     [CmdletBinding()]
     param (
