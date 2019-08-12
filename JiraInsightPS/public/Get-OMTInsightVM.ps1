@@ -13,13 +13,15 @@ function Get-OMTInsightVM {
 
         $ErrorActionPreference = "Stop"
 
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
     }
 
     process {
 
         try {
 
-            $EncodedPassword = ConnectJiraInsight -config $M_config
+            $EncodedPassword = GetVaultPassword -config $M_config
 
             $header = @{
 
@@ -71,7 +73,7 @@ function Get-OMTInsightVM {
 
             }
 
-            write-output $data
+            write-output $results
 
         } catch {
 

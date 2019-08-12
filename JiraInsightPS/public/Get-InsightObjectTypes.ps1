@@ -1,17 +1,13 @@
-function GetInsightObjectTypesEnum {
+function Get-InsightObjectTypes {
 
         [CmdletBinding()]
         param (
-
-            [Parameter(ValueFromPipeline, ValueFromPipelineByPropertyName, Mandatory)]
-            [string]
-            $Schema
 
         )
 
         begin {
 
-            $ErrorActionPreference = "Stop"
+            [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
         }
 
@@ -19,9 +15,10 @@ function GetInsightObjectTypesEnum {
 
             try {
 
+
                 $ObjectTypes = New-Object -TypeName "System.Collections.Generic.List[PSObject]"
 
-                $EncodedPassword = ConnectJiraInsight -config $M_config
+                $EncodedPassword = GetVaultPassword
 
                 $header = @{
 
@@ -31,7 +28,7 @@ function GetInsightObjectTypesEnum {
 
                 $baseuri = $M_config.Connection.ServerConfigurationurl
 
-                $vmobjecturi = "/rest/insight/1.0/objectschema/" + $Schema + "/objecttypes/flat"
+                $vmobjecturi = "/rest/insight/1.0/objectschema/" + $M_config.Connection.Schema + "/objecttypes/flat"
 
                 $resturi = $baseuri + $vmobjecturi
 
@@ -46,8 +43,6 @@ function GetInsightObjectTypesEnum {
                 }
 
                 $ObjectTypes.Add($data)
-
-
 
             }
 

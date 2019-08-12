@@ -1,11 +1,11 @@
-function Get-InsightVM {
+function Get-InsightObject {
 
     [CmdletBinding()]
     param (
 
-        [Parameter(ValueFromPipeline, ValueFromPipelineByPropertyName, Mandatory)]
-        [Enum]
-        $ObjectType
+        # [Parameter(ValueFromPipeline, ValueFromPipelineByPropertyName, Mandatory)]
+        # [Enum]
+        # $ObjectType
 
 
 
@@ -13,15 +13,13 @@ function Get-InsightVM {
 
     begin {
 
-        $ErrorActionPreference = "Stop"
-
     }
 
     process {
 
         try {
 
-            $EncodedPassword = ConnectJiraInsight -config $M_config
+            $EncodedPassword = GetVaultPassword -config $M_config
 
             $header = @{
 
@@ -49,31 +47,7 @@ function Get-InsightVM {
 
             $results = Invoke-RestMethod -Method POST -Uri $resturi -headers $header -body $jsonpayload -ErrorAction Stop
 
-            $attributes = $results.objectEntries.attributes
-
-            $ownerobject = $attributes | where-object { $_.objectTypeAttribute.id -eq 396 }
-
-            $owner = $ownerobject.objectAttributeValues.referencedobject.label
-
-            $name = $results.objectEntries.name
-
-            $domainobject = $attributes | where-object { $_.objectTypeAttribute.id -eq 399 }
-
-            $domain = $domainobject.objectAttributeValues
-
-            $vmuuid = $attributes | where-object { $_.objectTypeAttribute.id -eq 395 }
-
-            $data = [PSCustomObject] [ordered]@{
-
-                ServerName = $name
-                Domain     = $domain
-                Owner      = $owner
-                UUID       = $vmuuid.objectAttributeValues
-                VMwareName = $VMName
-
-            }
-
-            write-output $data
+            write-output $results
 
         } catch {
 
