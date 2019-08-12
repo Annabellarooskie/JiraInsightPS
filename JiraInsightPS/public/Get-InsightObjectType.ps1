@@ -1,4 +1,4 @@
-function Get-InsightObjectTypes {
+function Get-InsightObjectType {
 
         [CmdletBinding()]
         param (

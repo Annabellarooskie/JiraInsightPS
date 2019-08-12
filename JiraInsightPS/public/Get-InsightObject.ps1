@@ -3,11 +3,9 @@ function Get-InsightObject {
     [CmdletBinding()]
     param (
 
-        # [Parameter(ValueFromPipeline, ValueFromPipelineByPropertyName, Mandatory)]
-        # [Enum]
-        # $ObjectType
-
-
+    [Parameter()]
+    [ObjectTypes[]]
+    $ObjectType
 
     )
 
