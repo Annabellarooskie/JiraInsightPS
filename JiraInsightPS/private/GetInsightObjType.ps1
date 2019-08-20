@@ -1,6 +1,0 @@
-function GetInsightObjType {
-    param (
-
-    )
-
-}

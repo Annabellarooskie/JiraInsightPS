@@ -69,7 +69,6 @@ function Get-OMTInsightVM {
                 Domain     = $domain
                 Owner      = $owner
                 UUID       = $vmuuid.objectAttributeValues
-                VMwareName = $VMName
 
             }
 

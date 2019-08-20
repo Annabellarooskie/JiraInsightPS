@@ -1,4 +1,4 @@
-function Get-InsightObjectType {
+function GetClassInsightObjType {
 
         [CmdletBinding()]
         param (
@@ -28,7 +28,7 @@ function Get-InsightObjectType {
 
                 $baseuri = $M_config.Connection.ServerConfigurationurl
 
-                $vmobjecturi = "/rest/insight/1.0/objectschema/" + $M_config.Connection.SchemaID + "/objecttypes/flat"
+                $vmobjecturi = "/rest/insight/1.0/objectschema/" + $M_config.Connection.Schema + "/objecttypes/flat"
 
                 $resturi = $baseuri + $vmobjecturi
 
@@ -60,3 +60,5 @@ function Get-InsightObjectType {
         end {
         }
     }
+
+

@@ -4,12 +4,14 @@ function Get-InsightObject {
     param (
 
     [Parameter()]
-    [ObjectTypes[]]
+    [InsightObjType]
     $ObjectType
 
     )
 
     begin {
+
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
     }
 
@@ -17,7 +19,7 @@ function Get-InsightObject {
 
         try {
 
-            $EncodedPassword = GetVaultPassword -config $M_config
+            $EncodedPassword = GetVaultPassword
 
             $header = @{
 
@@ -27,17 +29,16 @@ function Get-InsightObject {
 
             $baseuri = $M_config.Connection.ServerConfigurationurl
 
-            $vmobjecturi = "/rest/insight/1.0/object/navlist/iql"
+            $vmobjecturi = "/rest/insight/1.0/object/navlist"
 
             $resturi = $baseuri + $vmobjecturi
 
             $payload = [PSCustomObject] [ordered] @{
 
-                objectTypeId      = "19"
-                resultsPerPage    = 1
-                iql               = "Name = $VMName"
+                objectTypeId      = $ObjectType.ID
+                resultsPerPage    = 10000
                 includeAttributes = $True
-                objectSchemaId    = "2"
+                objectSchemaId    = $M_config.Connection.SchemaID
 
             }
 
