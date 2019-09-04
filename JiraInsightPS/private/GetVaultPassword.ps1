@@ -8,7 +8,7 @@ function GetVaultPassword {
 
     try {
 
-        $VaultAccount = Get-OMTPasswordVaultEntry -UserName $M_Config.Connection.UserName -IncludePassword -Force
+        $VaultAccount = Get-VaultEntry -UserName $M_Config.Connection.UserName -IncludePassword -Force
 
         $EncodedAuthorization = [System.Text.Encoding]::UTF8.GetBytes($VaultAccount.UserName + ':' + ($VaultAccount.Password))
 

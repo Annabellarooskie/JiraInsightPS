@@ -11,7 +11,7 @@ function GetInsightObjByName {
 
     begin {
 
-        Set-StrictMode -version 1.0
+        Set-StrictMode -Version Latest
 
         $ErrorActionPreference = 'Stop'
 
@@ -59,14 +59,11 @@ function GetInsightObjByName {
 
                 foreach ($type in $attributes) {
 
-                    $data = [PSCustomObject]@{
+                    $value = if ($type.objectAttributeValues -ne 0) { Write-Output $type.objectAttributeValues.displayvalue } else { Write-Output $null }
 
-                        Attribute = $type.objectTypeAttribute.name
-                        Value     = $type.objectAttributeValues.displayvalue
+                    $Attribute = $type.objectTypeAttribute.name
 
-                    }
-
-                    Add-member -InputObject $Object -NotePropertyName $data.Attribute -NotePropertyValue $data.Value
+                    Add-member -InputObject $Object -NotePropertyName $Attribute -NotePropertyValue $value
 
                 }
 
