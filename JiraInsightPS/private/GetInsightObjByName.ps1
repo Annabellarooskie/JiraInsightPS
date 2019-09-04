@@ -1,28 +1,27 @@
 function GetInsightObjByName {
 
-    [CmdletBinding(ValueFromPipeline=$True)]
+    [CmdletBinding()]
     param (
 
-        [SupportsWildcards()]
+        [Parameter(ValueFromPipeline, ValueFromPipelineByPropertyName, Mandatory)]
         [string]
-        $Name
+        $DeviceName
 
     )
 
     begin {
 
-        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+        Set-StrictMode -version 1.0
 
-        $options = [Management.Automation.WildcardOptions]'IgnoreCase,Compiled'
+        $ErrorActionPreference = 'Stop'
+
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
     }
 
     process {
 
         try {
-
-
-            $Object = New-Object -TypeName "System.Collections.Generic.List[PSObject]"
 
             $EncodedPassword = GetVaultPassword
 
@@ -34,50 +33,46 @@ function GetInsightObjByName {
 
             $baseuri = $M_config.Connection.ServerConfigurationurl
 
-            $vmobjecturi = "/rest/insight/1.0/object/iql"
+            $vmobjecturi = "/rest/insight/1.0/object/navlist/iql"
 
             $resturi = $baseuri + $vmobjecturi
-
 
             $payload = [PSCustomObject] [ordered] @{
 
                 objectTypeId      = 19
                 resultsPerPage    = 10000
-                iql               = "Name = $Name"
+                iql               = "Name LIKE $DeviceName"
                 includeAttributes = $True
                 objectSchemaId    = $M_config.Connection.SchemaID
 
             }
 
-
-
             $jsonpayload = ConvertTo-Json -InputObject $payload
-
-
 
             $results = Invoke-RestMethod -Method POST -Uri $resturi -headers $header -body $jsonpayload -ErrorAction Stop
 
-           $ObjectAttributes = $results.attributes
+            $results.objectEntries | foreach-object {
 
-           [hashtable]$Attributes = @{
+                $Object = New-Object psobject
 
-            Attribute = $ObjectAttributes.objectTypeAttribute.Name
-            Value = $ObjectAttributes.objectAttributeValues.DisplayValue
+                $attributes = $_.attributes
 
-           }
+                foreach ($type in $attributes) {
 
-            # $data = [PSCustomObject]@{
+                    $data = [PSCustomObject]@{
 
-            #     ObjectLabel      = $result.label
-            #     ObjectType       = $result.objectType.Name
-            #     ObjectAttributes = $attributes
-            # }
+                        Attribute = $type.objectTypeAttribute.name
+                        Value     = $type.objectAttributeValues.displayvalue
 
-            # $Attributes.Add($data)
+                    }
 
+                    Add-member -InputObject $Object -NotePropertyName $data.Attribute -NotePropertyValue $data.Value
 
+                }
 
-            Write-Output $Attributes
+                Write-Output $Object
+
+            }
 
         } catch {
 

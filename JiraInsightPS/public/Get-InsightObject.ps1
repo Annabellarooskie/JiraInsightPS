@@ -7,13 +7,13 @@ function Get-InsightObject {
         [String]
         $TypeId,
 
-        [Parameter(ParameterSetName = 'JQL')]
+        [Parameter(ParameterSetName = 'IQL')]
         [String]
         $IQL,
 
-        [Parameter(ParameterSetName = 'ObjectID')]
+        [Parameter(ParameterSetName = 'DeviceName')]
         [string]
-        $Name
+        $DeviceName
 
 
 
@@ -35,11 +35,10 @@ function Get-InsightObject {
 
                     GetInsightObjectByTypeID -TypeID $TypeId
 
-
                 }
-                ObjectId {
+                DeviceName {
 
-                    GetInsightObjByName -Name $Name
+                    GetInsightObjByName -DeviceName $DeviceName
                 }
                 Default { }
             }
