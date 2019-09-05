@@ -1,3 +1,5 @@
+$ErrorActionPreference = "Stop"
+
 Set-StrictMode -Version Latest
 
 $Class = @(Get-ChildItem -File -Recurse -Filter *.ps1 -Path (Join-Path -Path $PSScriptRoot -ChildPath 'class') -ErrorAction SilentlyContinue)
@@ -27,3 +29,4 @@ catch {
     Write-Error -Message "Failed to load module configuration" -ErrorAction Stop
 
 }
+
