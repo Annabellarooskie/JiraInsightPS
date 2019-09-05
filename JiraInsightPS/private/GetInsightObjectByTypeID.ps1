@@ -53,8 +53,24 @@ function GetInsightObjectByTypeID {
 
             $results = Invoke-RestMethod -Method POST -Uri $resturi -headers $header -body $jsonpayload -ErrorAction Stop
 
-            write-output $results
+            $results.objectEntries | foreach-object {
 
+                $Object = New-Object psobject
+
+                $attributes = $_.attributes
+
+                foreach ($type in $attributes) {
+
+                    $Value = if ($type.objectAttributeValues -ne 0) { Write-Output $type.objectAttributeValues.displayvalue } else { Write-Output $null }
+
+                    $Attribute = $type.objectTypeAttribute.name
+
+                    Add-member -InputObject $Object -NotePropertyName $Attribute -NotePropertyValue $Value
+
+                }
+
+                Write-Output $Object
+            }
 
          } catch {
 
