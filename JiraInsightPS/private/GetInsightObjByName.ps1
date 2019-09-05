@@ -23,6 +23,8 @@ function GetInsightObjByName {
 
         try {
 
+            Write-Verbose "[$($MyInvocation.MyCommand.Name)]: Constructing POST to Insight API"
+
             $EncodedPassword = GetVaultPassword
 
             $header = @{
@@ -49,6 +51,8 @@ function GetInsightObjByName {
 
             $jsonpayload = ConvertTo-Json -InputObject $payload
 
+            Write-Verbose "[$($MyInvocation.MyCommand.Name)]: Connnecting to and querying Insight"
+
             $results = Invoke-RestMethod -Method POST -Uri $resturi -headers $header -body $jsonpayload -ErrorAction Stop
 
             $results.objectEntries | foreach-object {
@@ -59,11 +63,11 @@ function GetInsightObjByName {
 
                 foreach ($type in $attributes) {
 
-                    $value = if ($type.objectAttributeValues -ne 0) { Write-Output $type.objectAttributeValues.displayvalue } else { Write-Output $null }
+                    $Value = if ($type.objectAttributeValues -ne 0) { Write-Output $type.objectAttributeValues.displayvalue } else { Write-Output $null }
 
                     $Attribute = $type.objectTypeAttribute.name
 
-                    Add-member -InputObject $Object -NotePropertyName $Attribute -NotePropertyValue $value
+                    Add-member -InputObject $Object -NotePropertyName $Attribute -NotePropertyValue $Value
 
                 }
 
