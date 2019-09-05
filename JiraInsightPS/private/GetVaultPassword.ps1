@@ -6,19 +6,31 @@ function GetVaultPassword {
 
     )
 
-    try {
+    begin {
 
-        $VaultAccount = Get-VaultEntry -UserName $M_Config.Connection.UserName -IncludePassword -Force
+        Set-StrictMode -Version Latest
 
-        $EncodedAuthorization = [System.Text.Encoding]::UTF8.GetBytes($VaultAccount.UserName + ':' + ($VaultAccount.Password))
+        $ErrorActionPreference = 'Stop'
 
-        $EncodedPassword = [System.Convert]::ToBase64String($EncodedAuthorization)
+    }
 
-        Write-Output $EncodedPassword
+    process {
 
-    } catch {
+        try {
 
-        Write-Error -ErrorAction Stop -Exception $_.Exception
+            $VaultAccount = Get-VaultEntry -UserName $M_Config.Connection.UserName -IncludePassword -Force
+
+            $EncodedAuthorization = [System.Text.Encoding]::UTF8.GetBytes($VaultAccount.UserName + ':' + ($VaultAccount.Password))
+
+            $EncodedPassword = [System.Convert]::ToBase64String($EncodedAuthorization)
+
+            Write-Output $EncodedPassword
+
+        } catch {
+
+            Write-Error -ErrorAction Stop -Exception $_.Exception
+
+        }
 
     }
 }

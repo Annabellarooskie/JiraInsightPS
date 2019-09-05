@@ -4,12 +4,17 @@ function GetInsightObjectByTypeID {
     param (
 
     [Parameter()]
-    [String]
+    [int]
     $TypeID
 
     )
 
     begin {
+
+
+        Set-StrictMode -Version Latest
+
+        $ErrorActionPreference = 'Stop'
 
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
@@ -43,6 +48,8 @@ function GetInsightObjectByTypeID {
             }
 
             $jsonpayload = ConvertTo-Json -InputObject $payload
+
+            Write-Verbose "[$($MyInvocation.MyCommand.Name)]: Retrieving the objects for Jira Insight by TypeID"
 
             $results = Invoke-RestMethod -Method POST -Uri $resturi -headers $header -body $jsonpayload -ErrorAction Stop
 

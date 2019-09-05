@@ -1,19 +1,24 @@
 function GetInsightObjTypeMapping {
 
-        [CmdletBinding()]
-        param (
+    [CmdletBinding()]
+    param (
 
-        )
+    )
 
-        begin {
+    begin {
 
-            [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-        }
+        Set-StrictMode -Version Latest
 
-        process {
+        $ErrorActionPreference = 'Stop'
 
-            try {
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+    }
+
+    process {
+
+        try {
 
 
             $ObjectTypes = New-Object -TypeName "System.Collections.Generic.List[PSObject]"
@@ -32,6 +37,8 @@ function GetInsightObjTypeMapping {
 
             $resturi = $baseuri + $vmobjecturi
 
+            Write-Verbose "[$($MyInvocation.MyCommand.Name)]: Retrieving the ObjectTypes for Jira Insight"
+
             $results = Invoke-RestMethod -Method GET -Uri $resturi -headers $header -ErrorAction Stop
 
             foreach ($type in $results) {
@@ -49,17 +56,17 @@ function GetInsightObjTypeMapping {
             Write-Output $ObjectTypes
 
 
-            } catch {
+        } catch {
 
-                Write-Error -ErrorAction Continue -Exception $_.Exception
-
-            }
-
+            Write-Error -ErrorAction Continue -Exception $_.Exception
 
         }
 
-        end {
-        }
+
     }
+
+    end {
+    }
+}
 
 

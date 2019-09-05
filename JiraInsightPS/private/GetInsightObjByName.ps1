@@ -41,7 +41,7 @@ function GetInsightObjByName {
 
             $payload = [PSCustomObject] [ordered] @{
 
-                objectTypeId      = 19
+                objectTypeId      = $M_config.Connection.ObjectTypeID
                 resultsPerPage    = 10000
                 iql               = "Name LIKE $DeviceName"
                 includeAttributes = $True
@@ -51,7 +51,7 @@ function GetInsightObjByName {
 
             $jsonpayload = ConvertTo-Json -InputObject $payload
 
-            Write-Verbose "[$($MyInvocation.MyCommand.Name)]: Connnecting to and querying Insight"
+            Write-Verbose "[$($MyInvocation.MyCommand.Name)]: Retrieving the objects for Jira Insight by Name"
 
             $results = Invoke-RestMethod -Method POST -Uri $resturi -headers $header -body $jsonpayload -ErrorAction Stop
 
