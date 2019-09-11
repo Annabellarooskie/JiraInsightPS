@@ -53,7 +53,7 @@ function GetInsightObjByIQL {
 
             Write-Verbose "[$($MyInvocation.MyCommand.Name)]: Retrieving the objects for Jira Insight by IQL"
 
-            $results = Invoke-RestMethod -Method POST -Uri $resturi -headers $header -body $jsonpayload -ErrorAction Stop
+            $results = Invoke-RestMethod -Method POST -Uri $resturi -headers $header -body ([System.Text.Encoding]::UTF8.GetBytes($jsonpayload)) -ErrorAction Stop
 
             $results.objectEntries | foreach-object {
 
@@ -87,5 +87,3 @@ function GetInsightObjByIQL {
     end {
     }
 }
-
-

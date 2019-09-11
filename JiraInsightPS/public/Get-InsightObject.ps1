@@ -66,7 +66,7 @@ function Get-InsightObject {
                     GetInsightObjByName -DeviceName $DeviceName
                 }
 
-                IQL{
+                IQL {
 
                     GetInsightObjByIQL -IQL $IQL
                 }
