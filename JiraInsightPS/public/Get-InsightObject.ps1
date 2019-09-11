@@ -29,9 +29,9 @@ function Get-InsightObject {
         [int]
         $TypeId,
 
-        # [Parameter(ParameterSetName = 'IQL')]
-        # [String]
-        # $IQL,
+        [Parameter(ParameterSetName = 'IQL')]
+        [String]
+        $IQL,
 
         [Parameter(ParameterSetName = 'DeviceName')]
         [string]
@@ -64,6 +64,11 @@ function Get-InsightObject {
                 DeviceName {
 
                     GetInsightObjByName -DeviceName $DeviceName
+                }
+
+                IQL {
+
+                    GetInsightObjByIQL -IQL $IQL
                 }
                 Default { }
             }

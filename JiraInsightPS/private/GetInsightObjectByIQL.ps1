@@ -1,16 +1,15 @@
-function GetInsightObjectByTypeID {
+function GetInsightObjByIQL {
 
     [CmdletBinding()]
     param (
 
-    [Parameter()]
-    [int]
-    $TypeID
+        [Parameter(ValueFromPipeline, ValueFromPipelineByPropertyName, Mandatory)]
+        [string]
+        $IQL
 
     )
 
     begin {
-
 
         Set-StrictMode -Version Latest
 
@@ -24,6 +23,8 @@ function GetInsightObjectByTypeID {
 
         try {
 
+            Write-Verbose "[$($MyInvocation.MyCommand.Name)]: Constructing POST to Insight API"
+
             $EncodedPassword = GetVaultPassword
 
             $header = @{
@@ -34,14 +35,15 @@ function GetInsightObjectByTypeID {
 
             $baseuri = $M_config.Connection.ServerConfigurationurl
 
-            $vmobjecturi = "/rest/insight/1.0/object/navlist"
+            $vmobjecturi = "/rest/insight/1.0/object/navlist/iql"
 
             $resturi = $baseuri + $vmobjecturi
 
             $payload = [PSCustomObject] [ordered] @{
 
-                objectTypeId      = $TypeID
+                objectTypeId      = $M_config.Connection.ObjectTypeID
                 resultsPerPage    = 10000
+                iql               = "$IQL"
                 includeAttributes = $True
                 objectSchemaId    = $M_config.Connection.SchemaID
 
@@ -49,9 +51,9 @@ function GetInsightObjectByTypeID {
 
             $jsonpayload = ConvertTo-Json -InputObject $payload
 
-            Write-Verbose "[$($MyInvocation.MyCommand.Name)]: Retrieving the objects for Jira Insight by TypeID"
+            Write-Verbose "[$($MyInvocation.MyCommand.Name)]: Retrieving the objects for Jira Insight by IQL"
 
-            $results = Invoke-RestMethod -Method POST -Uri $resturi -headers $header -body $jsonpayload -ErrorAction Stop
+            $results = Invoke-RestMethod -Method POST -Uri $resturi -headers $header -body ([System.Text.Encoding]::UTF8.GetBytes($jsonpayload)) -ErrorAction Stop
 
             $results.objectEntries | foreach-object {
 
@@ -70,14 +72,14 @@ function GetInsightObjectByTypeID {
                 }
 
                 Write-Output $Object
+
             }
 
-         } catch {
+        } catch {
 
-             Write-Error -ErrorAction Continue -Exception $_.Exception
+            Write-Error -ErrorAction Continue -Exception $_.Exception
 
-         }
-
+        }
 
 
     }
