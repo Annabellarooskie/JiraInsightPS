@@ -2,7 +2,7 @@
 
 ## Abstract
 
-Provides a PowerShell interface to Jira Insight add-on. Currently only the get functionality is available.  There are a few steps to making your connection to insight more enjoyable:
+Provides a PowerShell interface to Jira Insight add-on. Currently only the get functionality is available and the objects returned only contain the attributes and their values. There are a few steps to making your connection to insight more enjoyable:
 
 *You will need a Windows credential manager module called Vault, which is a dependancy module.  Install and import. https://github.com/LastMisadventure/Vault
 
