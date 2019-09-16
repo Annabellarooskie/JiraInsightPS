@@ -23,7 +23,7 @@ function GetInsightObjByIQL {
 
         try {
 
-            Write-Verbose "[$($MyInvocation.MyCommand.Name)]: Constructing POST to Insight API"
+            Write-Verbose "[$($MyInvocation.MyCommand.Name)]: Constructing request to Insight API"
 
             $EncodedPassword = GetVaultPassword
 
