@@ -15,8 +15,11 @@ Add-VaultEntry -PsCredential $credentialToAdd -Resource mytoolsbox
 The config file for this module will need to be set up for the account you are using to connect to Insight, as well as the top level object type and Insight Schema ID.
 
 At this point the module should be functional now.  There are two public cmdlets at this time:
+
+~~~
 Get-InsightObject
 Get-InsightObjectType
+~~~
 
 Utilize the Get-Help cmdlet for more information on each command.
 
