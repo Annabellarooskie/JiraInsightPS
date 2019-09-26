@@ -24,6 +24,8 @@ function GetInsightObjectByTypeID {
 
         try {
 
+            Write-Verbose "[$($MyInvocation.MyCommand.Name)]: Constructing request to Insight API"
+
             $EncodedPassword = GetVaultPassword
 
             $header = @{
