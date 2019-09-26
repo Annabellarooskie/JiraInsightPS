@@ -17,7 +17,7 @@ The config file for this module will need to be set up for the account you are u
 At this point the module should be functional now.  There are two public cmdlets at this time:
 
 ~~~
-Get-InsightObject
+Get-InsightObjectAttr
 Get-InsightObjectType
 ~~~
 
