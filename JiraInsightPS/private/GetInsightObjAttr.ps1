@@ -27,8 +27,6 @@ function GetInsightObjAttr {
 
         try {
 
-            Write-Verbose "[$($MyInvocation.MyCommand.Name)]: Constructing request to Insight API"
-
             $EncodedPassword = GetVaultPassword
 
             $header = @{
@@ -42,6 +40,8 @@ function GetInsightObjAttr {
 
 
             if ((!$DeviceName) -and ($TypeID) ) {
+
+                Write-Verbose "[$($MyInvocation.MyCommand.Name)]: Constructing request to Insight API for TypeID Only"
 
                 $vmobjecturi = "/rest/insight/1.0/object/navlist"
 
@@ -58,6 +58,8 @@ function GetInsightObjAttr {
             }
 
             if (($DeviceName) -and (!$TypeID) ) {
+
+                Write-Verbose "[$($MyInvocation.MyCommand.Name)]: Constructing request to Insight API for DeviceName Only"
 
                 $vmobjecturi = "/rest/insight/1.0/object/navlist/iql"
 
@@ -77,6 +79,8 @@ function GetInsightObjAttr {
 
             if (($DeviceName) -and ($TypeID) ) {
 
+                Write-Verbose "[$($MyInvocation.MyCommand.Name)]: Constructing request to Insight API for DeviceName and TypeID"
+
                 $vmobjecturi = "/rest/insight/1.0/object/navlist/iql"
 
                 $resturi = $baseuri + $vmobjecturi
@@ -93,8 +97,6 @@ function GetInsightObjAttr {
             }
 
             $jsonpayload = ConvertTo-Json -InputObject $payload
-
-            Write-Verbose "[$($MyInvocation.MyCommand.Name)]: Retrieving the objects for Jira Insight by Name"
 
             $results = Invoke-RestMethod -Method POST -Uri $resturi -headers $header -body $jsonpayload -ErrorAction Stop
 
