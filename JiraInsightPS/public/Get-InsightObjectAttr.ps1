@@ -18,6 +18,7 @@ This parameter is used to return all the objects attributes/values from an IQL q
 .EXAMPLE
 Get-InsightObjectAttr -TypeID 32
 Get-InsightObjectAttr -DeviceName WAPDEVICE-01
+Get-InsightObjectAttr -DeviceName WAPDEVICE-01 -TypeID 32
 Get-InsightObjectAttr -IQL '"OS Version" IN ("Microsoft Windows XP Professional (32-bit)") AND objectType IN ("Virtual Machine")'
 
 .NOTES

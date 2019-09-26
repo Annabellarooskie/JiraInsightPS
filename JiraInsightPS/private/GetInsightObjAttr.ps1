@@ -37,8 +37,6 @@ function GetInsightObjAttr {
 
             $baseuri = $M_config.Connection.ServerConfigurationurl
 
-
-
             if ((!$DeviceName) -and ($TypeID) ) {
 
                 Write-Verbose "[$($MyInvocation.MyCommand.Name)]: Constructing request to Insight API for TypeID Only"
