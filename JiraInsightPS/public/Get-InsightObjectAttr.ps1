@@ -4,29 +4,32 @@ This public cmdlet queries and returns the Jira Insight object attributes and th
 Both of which are defined in the configuration file for the module.
 
 .PARAMETER TypeID
-This parameter is used to return all objects attributes/values of a certain type. It is most often used in conjunction with the Get-InsightObjectType cmdlet.
+This parameter is used to return all the objects attributes/values of a certain type. It is most often used in conjunction with the Get-InsightObjectType cmdlet.
 It is mutually exclusive to the DeviceName and IQL parameters.
 
 .PARAMETER DeviceName
-This parameter is used to return all objects attributes/values of a certain name.  This parameter does both exact name and partial matching on the string.  Do not use wildcard characters.
+This parameter is used to return all the objects attributes/values of a certain name.  This parameter does both exact name and partial matching on the string.  Do not use wildcard characters.
 It is mutually exclusive to the TypeID and IQL parameters.
+
+.PARAMETER IQL
+This parameter is used to return all the objects attributes/values from an IQL query.  It is mutually exclusive to the TypeID and DeviceName parameters.
 
 
 .EXAMPLE
-Get-InsightObject -TypeID 32
-Get-InsightObject -DeviceName WAPDEVICE-01
-Get-InsightObject -IQL '"OS Version" IN ("Microsoft Windows XP Professional (32-bit)") AND objectType IN ("Virtual Machine")'
+Get-InsightObjectAttr -TypeID 32
+Get-InsightObjectAttr -DeviceName WAPDEVICE-01
+Get-InsightObjectAttr -IQL '"OS Version" IN ("Microsoft Windows XP Professional (32-bit)") AND objectType IN ("Virtual Machine")'
 
 .NOTES
 The authentication to Jira Insight is managed by the config file for the username, and assumes you have stored the password in the Credential Manager on the Windows System prior
 to running the cmdlet.
 #>
-function Get-InsightObject {
+function Get-InsightObjectAttr {
 
     [CmdletBinding()]
     param (
 
-        [Parameter(ParameterSetName = 'TypeID')]
+        [Parameter(ParameterSetName = 'Generic')]
         [int]
         $TypeId,
 
@@ -34,7 +37,7 @@ function Get-InsightObject {
         [String]
         $IQL,
 
-        [Parameter(ParameterSetName = 'DeviceName')]
+        [Parameter(ParameterSetName = 'Generic')]
         [string]
         $DeviceName
 
@@ -48,31 +51,19 @@ function Get-InsightObject {
         Set-StrictMode -Version Latest
 
         $ErrorActionPreference = 'Stop'
-
     }
 
     process {
 
         try {
 
-            switch ($PSCmdlet.ParameterSetName) {
+            if ($PSBoundParameters.ContainsKey('IQL')) {
 
-                TypeId {
+                GetInsightObjByIQL -IQL $IQL
 
-                    GetInsightObjectByTypeID -TypeID $TypeId
-
-                }
-                DeviceName {
-
-                    GetInsightObjByName -DeviceName $DeviceName
-                }
-
-                IQL {
-
-                    GetInsightObjByIQL -IQL $IQL
-                }
-                Default { }
             }
+
+                GetInsightObjAttr -DeviceName $DeviceName -TypeID $TypeID
 
 
         } catch {
