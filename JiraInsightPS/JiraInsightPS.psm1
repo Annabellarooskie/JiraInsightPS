@@ -23,7 +23,9 @@ foreach ($function in @($Class + $Public + $Private)) {
 try {
 
     $script:M_Config = Import-PowerShellDataFile -Path $PSScriptRoot\Config.psd1 -ErrorAction Stop
+
 }
+
 catch {
 
     Write-Error -Message "Failed to load module configuration" -ErrorAction Stop

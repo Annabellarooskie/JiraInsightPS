@@ -25,7 +25,7 @@ Get-InsightObjectAttr -IQL '"OS Version" IN ("Microsoft Windows XP Professional 
 The authentication to Jira Insight is managed by the config file for the username, and assumes you have stored the password in the Credential Manager on the Windows System prior
 to running the cmdlet.
 #>
-function Get-InsightObjectAttr {
+function Get-InsightObjectAttrVal {
 
     [CmdletBinding()]
     param (
@@ -64,7 +64,7 @@ function Get-InsightObjectAttr {
 
             }
 
-                GetInsightObjAttr -DeviceName $DeviceName -TypeID $TypeID
+                GetInsightObjAttrVal -DeviceName $DeviceName -TypeID $TypeID
 
 
         } catch {

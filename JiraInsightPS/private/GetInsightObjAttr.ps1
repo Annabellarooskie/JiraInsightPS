@@ -1,4 +1,4 @@
-function GetInsightObjAttr {
+function GetInsightObjAttrVal {
 
     [CmdletBinding()]
     param (
@@ -110,7 +110,7 @@ function GetInsightObjAttr {
 
                     $Attribute = $type.objectTypeAttribute.name
 
-                    Add-member -InputObject $Object -NotePropertyName $Attribute -NotePropertyValue $Value
+                    Add-member -InputObject $Object -NotePropertyName $Attribute -NotePropertyValue $Value -force
 
                 }
 
